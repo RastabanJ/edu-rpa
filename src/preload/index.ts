@@ -30,6 +30,11 @@ export type Run = {
 
 export type NewRun = Omit<Run, 'id' | 'startedAt'>
 
+export type Session = {
+  id: string
+  loggedInAt: string
+}
+
 const api = {
   getVersion: (): Promise<string> => ipcRenderer.invoke('app:version'),
 
@@ -67,7 +72,12 @@ const api = {
   getRecruitmentDefaults: (): Promise<Record<string, unknown>> =>
     ipcRenderer.invoke('recruitment:getDefaults'),
   saveRecruitmentDefaults: (data: Record<string, unknown>): Promise<Record<string, unknown>> =>
-    ipcRenderer.invoke('recruitment:saveDefaults', data)
+    ipcRenderer.invoke('recruitment:saveDefaults', data),
+
+  getSession: (): Promise<Session | null> => ipcRenderer.invoke('session:get'),
+  saveSession: (session: Session): Promise<Session> =>
+    ipcRenderer.invoke('session:save', session),
+  clearSession: (): Promise<void> => ipcRenderer.invoke('session:clear')
 }
 
 contextBridge.exposeInMainWorld('api', api)

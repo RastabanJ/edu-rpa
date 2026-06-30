@@ -10,10 +10,16 @@ export type Run = {
   outputSummary: string
 }
 
+export type Session = {
+  id: string
+  loggedInAt: string
+}
+
 type Schema = {
   templates: Template[]
   runs: Run[]
   recruitmentDefaults: Record<string, unknown>
+  session: Session | null
 }
 
 const RUN_HISTORY_LIMIT = 200
@@ -23,7 +29,8 @@ const store = new Store<Schema>({
   defaults: {
     templates: DEFAULT_TEMPLATES,
     runs: [],
-    recruitmentDefaults: {}
+    recruitmentDefaults: {},
+    session: null
   }
 })
 
@@ -78,4 +85,17 @@ export function appendRun(input: Omit<Run, 'id' | 'startedAt'>): Run {
 export function clearRuns(): Run[] {
   store.set('runs', [])
   return []
+}
+
+export function getSession(): Session | null {
+  return store.get('session')
+}
+
+export function saveSession(session: Session): Session {
+  store.set('session', session)
+  return session
+}
+
+export function clearSession(): void {
+  store.set('session', null)
 }

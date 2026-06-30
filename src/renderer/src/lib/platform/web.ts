@@ -1,4 +1,6 @@
 import * as XLSX from 'xlsx'
+import type { Session } from '../auth'
+import { isAllowedId } from '../auth'
 import type { NewRun, ParsedRow, ParsedSheet, Run } from '../../types'
 import type {
   OpenExcelResult,
@@ -10,6 +12,7 @@ import type {
 
 const KEY_RUNS = 'edu:runs'
 const KEY_DEFAULTS = 'edu:recruitmentDefaults'
+const KEY_SESSION = 'edu:session'
 const APP_VERSION = '0.0.1-web'
 const RUN_HISTORY_LIMIT = 200
 
@@ -274,5 +277,20 @@ export const webAdapter: PlatformAdapter = {
   async saveRecruitmentDefaults(data: Record<string, unknown>) {
     setJSON(KEY_DEFAULTS, data)
     return data
+  },
+
+  async getSession(): Promise<Session | null> {
+    const raw = getJSON<Session | null>(KEY_SESSION, null)
+    if (!raw || typeof raw.id !== 'string' || !isAllowedId(raw.id)) return null
+    return raw
+  },
+
+  async saveSession(session: Session): Promise<Session> {
+    setJSON(KEY_SESSION, session)
+    return session
+  },
+
+  async clearSession(): Promise<void> {
+    localStorage.removeItem(KEY_SESSION)
   }
 }

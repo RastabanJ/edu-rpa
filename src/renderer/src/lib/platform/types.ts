@@ -1,3 +1,4 @@
+import type { Session } from '../auth'
 import type { NewRun, ParsedSheet, Run } from '../../types'
 
 export type OpenExcelResult =
@@ -27,4 +28,7 @@ export type PlatformAdapter = {
   clearRuns(): Promise<Run[]>
   getRecruitmentDefaults(): Promise<Record<string, unknown>>
   saveRecruitmentDefaults(data: Record<string, unknown>): Promise<Record<string, unknown>>
+  getSession(): Promise<Session | null>
+  saveSession(session: Session): Promise<Session>
+  clearSession(): Promise<void>
 }

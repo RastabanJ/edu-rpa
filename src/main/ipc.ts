@@ -11,14 +11,18 @@ import {
 import {
   appendRun,
   clearRuns,
+  clearSession,
   deleteTemplate,
   getRecruitmentDefaults,
+  getSession,
   listRuns,
   listTemplates,
   resetTemplates,
   saveRecruitmentDefaults,
+  saveSession,
   upsertTemplate,
-  type Run
+  type Run,
+  type Session
 } from './store'
 import type { Template } from './templates'
 
@@ -65,6 +69,10 @@ export function registerIpc(getWindow: () => BrowserWindow | null): void {
   ipcMain.handle('runs:list', () => listRuns())
   ipcMain.handle('runs:append', (_e, input: Omit<Run, 'id' | 'startedAt'>) => appendRun(input))
   ipcMain.handle('runs:clear', () => clearRuns())
+
+  ipcMain.handle('session:get', () => getSession())
+  ipcMain.handle('session:save', (_e, session: Session) => saveSession(session))
+  ipcMain.handle('session:clear', () => clearSession())
 
   ipcMain.handle('clipboard:write', (_e, text: string) => {
     clipboard.writeText(text)
