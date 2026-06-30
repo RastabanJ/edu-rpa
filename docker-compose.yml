@@ -1,0 +1,23 @@
+name: edu_dev
+
+services:
+  edu_dev:
+    build:
+      context: .
+      args:
+        DEV_BANNER: "1"
+    image: edu:dev
+    container_name: edu_dev
+    restart: unless-stopped
+
+    expose:
+      - "80"
+
+    networks:
+      proxy:
+        aliases:
+          - edu_dev
+
+networks:
+  proxy:
+    external: true

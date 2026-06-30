@@ -1,0 +1,25 @@
+# 의존성
+node_modules/
+
+# 빌드 산출물
+out/
+dist/
+release/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# 로그
+*.log
+npm-debug.log*
+
+# 에디터/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 환경 변수
+.env
+.env.local
+.env.*.local
